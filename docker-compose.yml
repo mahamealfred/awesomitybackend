@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    container_name: awesomity-backend
+    restart: always
+    env_file: .env
+    environment:
+      - DATABASE-URL:"${DATABASE_DEV_URL}"
+    build: .
+    ports:
+      - '8000:8000'
+    networks: 
+      - challenge
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+    ports:
+      - "5000:5432"
+    networks: 
+      - challenge
+    environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+volumes: 
+  my_dbdata:
+networks: 
+  challenge:
+    driver: bridge
